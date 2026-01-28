@@ -1,5 +1,5 @@
 {
-  "geometry": "1680x1063+471+155",
+  "geometry": "1680x1063+580+254",
   "sort_column": "name",
   "sort_reverse": false,
   "gui_settings": {
@@ -21,7 +21,7 @@
     "map_unknown_group": "#cbd2d9",
     "map_highlight": "#0b69ff",
     "map_max_related": 10,
-    "deep_scan": false
+    "deep_scan": true
   },
   "groups": [
     "VIDEO EDITING",

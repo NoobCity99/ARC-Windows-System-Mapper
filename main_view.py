@@ -1,5 +1,6 @@
 import re
 import tkinter as tk
+import webbrowser
 from tkinter import ttk
 from typing import Callable, Dict, List, Optional, Tuple
 
@@ -54,6 +55,11 @@ class MainView:
         self._deep_scan_count_var: Optional[tk.StringVar] = None
         self._deep_scan_add_btn: Optional[ttk.Button] = None
         self._deep_scan_ignore_btn: Optional[ttk.Button] = None
+        self._about_window: Optional[tk.Toplevel] = None
+        self._manual_window: Optional[tk.Toplevel] = None
+        self._manual_page_var: Optional[tk.IntVar] = None
+        self._manual_page_text: Optional[tk.StringVar] = None
+        self._manual_body: Optional[tk.Text] = None
         self.group_filter_var: Optional[tk.StringVar] = None
 
         self._build_menubar()
@@ -327,12 +333,206 @@ class MainView:
             command=lambda: self._dispatch("on_group_filter_change")(self.group_filter_var.get()),
         )
         menubar.add_cascade(label="View", menu=view_menu)
+        help_menu = tk.Menu(menubar, tearoff=0)
+        help_menu.add_command(label="How To", command=self._show_manual)
+        help_menu.add_command(label="About", command=self._show_about)
+        menubar.add_cascade(label="HELP", menu=help_menu)
         self.root.config(menu=menubar)
         self.file_menu = file_menu
         self.set_export_enabled(False)
         self.set_save_json_enabled(False)
 
         self.context_menu = tk.Menu(self.root, tearoff=0)
+
+    def _show_manual(self) -> None:
+        if self._manual_window is not None and self._manual_window.winfo_exists():
+            self._manual_window.lift()
+            self._manual_window.focus_force()
+            return
+
+        window = tk.Toplevel(self.root)
+        window.title("ARC User Manual")
+        window.resizable(True, True)
+        window.transient(self.root)
+        window.geometry("760x560")
+
+        self._manual_page_var = tk.IntVar(value=1)
+        self._manual_page_text = tk.StringVar(value="Page 1 of 3")
+
+        header = ttk.Frame(window, padding=(12, 10, 12, 6))
+        header.grid(row=0, column=0, sticky="ew")
+        header.columnconfigure(1, weight=1)
+
+        prev_btn = ttk.Button(header, text="\u25c0", width=3, command=lambda: self._manual_step(-1))
+        prev_btn.grid(row=0, column=0, sticky="w")
+        page_label = ttk.Label(header, textvariable=self._manual_page_text)
+        page_label.grid(row=0, column=1, sticky="ew")
+        next_btn = ttk.Button(header, text="\u25b6", width=3, command=lambda: self._manual_step(1))
+        next_btn.grid(row=0, column=2, sticky="e")
+
+        body_frame = ttk.Frame(window, padding=(12, 0, 12, 12))
+        body_frame.grid(row=1, column=0, sticky="nsew")
+        body_frame.rowconfigure(0, weight=1)
+        body_frame.columnconfigure(0, weight=1)
+
+        body = tk.Text(body_frame, wrap="word", height=20, padx=8, pady=6)
+        body.configure(state="disabled")
+        body.grid(row=0, column=0, sticky="nsew")
+        scroll = ttk.Scrollbar(body_frame, orient=tk.VERTICAL, command=body.yview)
+        body.configure(yscrollcommand=scroll.set)
+        scroll.grid(row=0, column=1, sticky="ns")
+        self._manual_body = body
+
+        self._manual_window = window
+        window.protocol("WM_DELETE_WINDOW", self._close_manual_window)
+
+        self._manual_update()
+
+    def _manual_step(self, delta: int) -> None:
+        if not self._manual_page_var:
+            return
+        page = self._manual_page_var.get()
+        page = max(1, min(3, page + delta))
+        self._manual_page_var.set(page)
+        self._manual_update()
+
+    def _manual_update(self) -> None:
+        if not self._manual_body or not self._manual_page_var:
+            return
+        page = self._manual_page_var.get()
+        if self._manual_page_text:
+            self._manual_page_text.set(f"Page {page} of 3")
+        content = self._manual_page_content(page)
+        self._manual_body.configure(state="normal")
+        self._manual_body.delete("1.0", tk.END)
+        self._manual_body.insert("1.0", content)
+        self._manual_body.configure(state="disabled")
+
+    def _manual_page_content(self, page: int) -> str:
+        # DEV NOTE (manual formatting):
+        # Tkinter Text does NOT render markdown. To add bold/underline, use Text tags.
+        # Suggested approach:
+        # 1) Change _manual_page_content to return a list of (text, tag) segments instead of one string.
+        # 2) In _show_manual, after creating self._manual_body, define tags once, e.g.:
+        #    self._manual_body.tag_configure("manual_bold", font=("TkDefaultFont", 9, "bold"))
+        #    self._manual_body.tag_configure("manual_underline", font=("TkDefaultFont", 9, "underline"))
+        # 3) In _manual_update, iterate segments and insert with tag:
+        #    for text, tag in segments: self._manual_body.insert("end", text, tag or "")
+        # 4) Keep headings as tagged segments (e.g., ("System View\n\n", "manual_bold")).
+        pages = {
+            1: (
+                "\u29BF SYSTEM VIEW \u29BF \n\n"
+                "\u2726Access: select SYSTEM VIEW in the top toggle; this view is the primary table for scanned apps and reference data.\n"
+                "_____\n"
+                "\u2726Scan controls: Scan starts a system scan, Clear Scan removes the current scan results, and Close Reference exits a loaded reference dataset (you will be prompted to save if it was changed).\n"
+                "_____\n"
+                "\u2726File menu (global): Import CSV… and Open JSON… load a reference dataset; Export XLSX… exports the currently displayed apps (including filtered results) with a Related Files sheet; Save JSON… saves the current scan only.\n"
+                "_____\n"
+                "\u2726View menu (global): All Results shows all apps; Grouped Only shows only apps that have a group assigned.\n"
+                "_____\n"
+                "\u2726Sorting/filtering: use the Sort by dropdown and Descending toggle; click any column header to sort by that column; the Filter box matches app name and publisher (use Clear Filter to reset).\n"
+                "_____\n"
+                "\u2726Table interactions: click a website cell to open the URL (cursor becomes a hand); right-click Name → VIEW RELATED FILES; right-click Install Location → Open, Set Install Location…, or Clear Install Location Override; right-click Version → Set Version… (only if the scan did not supply one); right-click Install Date → Set Install Date… (only if the scan did not supply one).\n"
+                "_____\n"
+                "\u2726Groups: double-click a Group cell to assign a group (groups are created in Settings); group colors carry into the System Map.\n"
+                "_____\n"
+                "\u2726Size (MB): selecting a row or sorting by Size (MB) triggers background size scans for missing values.\n"
+                "_____\n"
+                "\u2726Status bar: shows count and whether you are viewing (scan) or (reference); a * indicates unsaved reference changes, and the source filename is shown when applicable.\n"
+                "_____\n"
+                "\u2726Settings (gear): opens GUI customization (colors/fonts), System Map styling, Map max related limit (0–50), deep scan toggle, drive selection, and group management.\n"
+            ),
+            2: (
+                "\u29BF RELATED FILES \u29BF \n\n"
+                "\u2726Access: select RELATED FILES or right-click an app name in System View → VIEW RELATED FILES (this also filters to that app).\n"
+                "_____\n"
+                "\u2726Availability: this view is disabled until a system scan exists; it runs related-file scanning on demand.\n"
+                "_____\n"
+                "\u2726Layout: parent rows are apps; child rows list related paths with columns Path, Type, Source, Confidence, and Marked.\n"
+                "_____\n"
+                "\u2726Filtering: the main Filter box searches app name/publisher plus related file details (path/source/confidence/marked); Grouped Only applies here too.\n"
+                "_____\n"
+                "\u2726Marking: double-click a child row to cycle Marked through (blank → Keep → Ignore → blank).\n"
+                "_____\n"
+                "\u2726Parent row context menu (right-click app header): Add Files…, Add Folder…, Deeper Scan….\n"
+                "_____\n"
+                "\u2726Add Files/Folder: adds manual related items; for folders you can add just the folder or the folder plus its contents (up to 5,000 files, depth 10).\n"
+                "_____\n"
+                "\u2726Deeper Scan: scans the selected drives (from Settings) for additional candidates; results open in a window where you can Add Selected or Ignore Selected.\n"
+                "_____\n"
+                "\u2726Child row context menu (right-click Path cell): Open, Reassign to…, Unassign/Unassign Items, Remove Manual Item(s) (manual items only).\n"
+                "_____\n"
+                "\u2726Reassign: opens a searchable list of apps so selected related items can be re-attached to another app.\n"
+                "_____\n"
+                "\u2726Status bar: shows related file count and whether you are viewing (scan) or (reference).\n"
+            ),
+            3: (
+                "\u29BF SYSTEM MAP \u29BF \n\n"
+                "\u2726Access: select SYSTEM MAP; requires a scan (view is disabled without one).\n"
+                "_____\n"
+                "\u2726What you see: drives (diamonds), apps (rounded rectangles), and related nodes (rectangles) laid out by drive; app/related colors reflect group colors, ungrouped apps use the Map ungrouped color.\n"
+                "_____\n"
+                "\u2726Filtering: the main Filter and Grouped Only options limit which apps are mapped.\n"
+                "_____\n"
+                "\u2726Highlighting: click an app node or drive diamond to highlight its nodes/edges; click empty space to clear the highlight.\n"
+                "_____\n"
+                "\u2726Navigation: mouse wheel scrolls vertically; Shift + wheel scrolls horizontally.\n"
+                "_____\n"
+                "\u2726Drive tinting: right-click a drive diamond to apply a lane tint; choose Default to remove the custom tint.\n"
+                "_____\n"
+                "\u2726Related node limit: the number of related items per app is capped by Settings → Map max related (0 hides related nodes).\n"
+                "_____\n"
+                "\u2726Status bar: shows apps mapped or a scanning message if related files are still being gathered.\n"
+                "_____\n"
+                "\u2726Settings (gear): customize map background/text/edge/outline/highlight colors and drive selection used by deeper scans.\n"
+            ),
+        }
+        return pages.get(page, "")
+
+    def _close_manual_window(self) -> None:
+        if self._manual_window and self._manual_window.winfo_exists():
+            self._manual_window.destroy()
+        self._manual_window = None
+        self._manual_page_var = None
+        self._manual_page_text = None
+        self._manual_body = None
+
+    def _show_about(self) -> None:
+        if self._about_window is not None and self._about_window.winfo_exists():
+            self._about_window.lift()
+            self._about_window.focus_force()
+            return
+
+        window = tk.Toplevel(self.root)
+        window.title("About ARC")
+        window.resizable(False, False)
+        window.transient(self.root)
+        window.configure(padx=16, pady=12)
+
+        about_text = (
+            "ARC - Architecture Rebuilding Cartographer\n\n"
+            "A Windows EcoSystem Mapping Tool\n\n"
+            "Developed by: NoobCity99 (2026)\n\n"
+            "Provide feedback or collab at:"
+        )
+        message = ttk.Label(window, text=about_text, justify="left")
+        message.grid(row=0, column=0, sticky="w")
+
+        url = "https://github.com/NoobCity99/ARC-Windows-System-Mapper"
+        link_font = ("TkDefaultFont", 9, "underline")
+        link = tk.Label(window, text=url, fg="#1a0dab", cursor="hand2", font=link_font)
+        link.grid(row=1, column=0, sticky="w", pady=(4, 0))
+        link.bind("<Button-1>", lambda _e: webbrowser.open(url))
+
+        self._about_window = window
+        window.protocol("WM_DELETE_WINDOW", self._close_about_window)
+
+    def _close_about_window(self) -> None:
+        if self._about_window is None:
+            return
+        if self._about_window.winfo_exists():
+            self._about_window.destroy()
+        self._about_window = None
 
     def _open_context_path(self) -> None:
         if self._context_path:

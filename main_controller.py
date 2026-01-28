@@ -112,7 +112,7 @@ class MainController:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
         # Update the window title shown in the title bar/taskbar.
-        self.root.title("ARC \u2014 App Scanner (PoC)")
+        self.root.title("ARC \u29BF Windows EcoSystem Mapper")
         self._apply_window_icon()
         self.style = ttk.Style(self.root)
         self.scanner = AppScanner()
