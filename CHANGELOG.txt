@@ -1,0 +1,83 @@
+# Changelog
+
+## [2026-01-27]
+### Added
+- View menu with filter options: All Results and Grouped Only.
+- Group filter state and logic for system, related, and map views.
+- MainView View-menu radio items backed by `group_filter_var` and new callback wiring.
+- Controller handler `on_group_filter_change` to switch group filter modes.
+- Helper `_apps_for_group_filter` to centralize grouped-only app selection.
+
+### Changed
+- Filtering now applies the group filter before text search and view-specific filtering.
+- Related view filtering and scan targeting now respect the grouped-only filter.
+- Map view scan targeting now respects the grouped-only filter.
+
+### Added
+- Background scan/job queue with polling for system, related, size, and deep scans to keep UI responsive.
+- Debounced filter input to reduce redraw churn.
+- On-demand related file scanning and lazy size scanning (triggered by size sort or row selection).
+- Size scan limits and persisted size cache in state.
+- Deep scan toggle in settings and related scan tokenization by drive + deep scan state.
+- Map refresh debounce and per-app related-node cache for map view.
+- Related search index (per-row search blobs + 3-gram candidate narrowing) for faster related filtering.
+- Path normalization cache to avoid repeated abspath/normcase costs.
+- XLSX export in write-only mode to reduce memory usage on large exports.
+- Test infrastructure: `pytest.ini` plus unit, scanner, related-scanner, controller, and GUI smoke tests.
+
+### Changed
+- MainView system tree updates now diff rows (detach/move) instead of full rebuilds; related tree now diffs parents/children.
+- MainView added system tree selection callback wiring for size scan triggers.
+- App models now cache keys, name keys, install date parsing, and search blobs.
+- Scanner now supports optional size computation and caches App Paths lookups.
+- Related scanner now caches root index/config scans and supports deep-scan-aware targeting.
+- Controller now clears caches on scan/reference changes and related edits to keep indices and map data consistent.
+- Install-location detection now falls back to uninstall command paths and App Paths, and ignores "unknown" tokens.
+- Related-file scoring + global dedupe added to keep each path assigned to the best-matching app.
+- Related Files view now supports multi-select reassign with a filterable app picker (clear filter + match count).
+- Added manual related file/folder additions from parent-row context menu, with optional folder content inclusion.
+- Manual related items are locked, labeled "Manual", and persisted across scans.
+- Added "Remove Manual Item(s)" context option for manual related entries.
+- Added "Unassign" for related entries (removes current relationship without ignoring future deep scans).
+- Related ignores and unassigned lists now persist and are applied during scans.
+- Added "Deeper Scan..." per-app: background fuzzy scan, results window, and Add/Ignore actions with persistence.
+- Related view now preserves expansion state on refresh; collapse only when entering via toolbar.
+- System filter now includes group alongside name/publisher.
+- Manual install-location override per app added (set/clear via context menu, persisted, used in size + map).
+- Version and Install Date overrides added with right-click edit (only when scan data is blank).
+- Deep scan and background operations now show a bottom progress bar indicator.
+
+### Added
+- System Map view (Canvas) with a third toolbar toggle, scrollable canvas, and hierarchical drive/app/related layout.
+- Map interactivity: click-to-highlight related nodes/edges using Canvas tags (`current`) and drive/app tag grouping.
+- Map appearance settings (map colors + max related count) integrated into GUI Settings with live refresh.
+- Group color management with palette defaults and Settings > Groups color picker; colors feed map node tints.
+- Drive selection UI in Settings > Scan Options to include/exclude drives from related scans and map data.
+- Related scan support for extra drive roots plus new "Drive" source label.
+- Map background styling: vertical drive bands and subtle noise texture for depth.
+- Drive tint context menu (right-click drive node) with color swatch icons.
+- Mouse wheel scrolling for map view (vertical + shift for horizontal).
+- Shape updates: rounded APP nodes and diamond DRIVE nodes (file/folder nodes unchanged).
+
+### Changed
+- Related scan token now includes selected drive list to invalidate cache on drive selection changes.
+- Map payload now includes selected drives even when no app/related items exist on them.
+- Settings open flow refreshes available drives before rendering drive checkboxes.
+- State persistence now includes group colors and selected drives.
+
+## [2026-01-27] (Thread Updates)
+- 2026-01-27 — Fixed size scan crash by making `compute_install_size_mb` an instance method (scanner.py).
+- 2026-01-27 — Added a Clear button beside the filter field and wired a clear-filter callback (main_view.py, main_controller.py).
+- 2026-01-27 — Created `assets/` and `assets/icons/` with an `assets/README.txt` placeholder for icon files.
+- 2026-01-27 — Added window icon loading from `assets/app.ico` at startup (main_controller.py).
+- 2026-01-27 — Added PyInstaller build script `scripts/package.sh` and documented packaging + icon paths (README.txt).
+- 2026-01-27 — Added inline customization notes for common UI tuning points (main_controller.py).
+- 2026-01-27 — Enhanced Settings tabs with thicker/darker beveled styling for better separation (settings_view.py).
+
+## [2026-01-26] (Thread Updates)
+- 2026-01-26 - Added related-file data model (`RelatedFile`) and per-app related file lists with JSON import/export support (models.py, import_export.py).
+- 2026-01-26 - Added related file scanning heuristics (install location + AppData/LocalAppData/ProgramData/Documents/Saved Games, config extensions) and a dedicated scanner module (related_scanner.py).
+- 2026-01-26 - Added System/Related view toggle buttons and a second treeview for related files, with view switching logic and related-view availability gating (main_view.py, main_controller.py).
+- 2026-01-26 - Related Files view now groups rows by app with collapsible parent rows (collapsed by default) and supports mark toggling on related rows (main_view.py, main_controller.py).
+- 2026-01-26 - Added right-click open for related file paths and a system-view "VIEW RELATED FILES" context action that switches views and filters by app name (main_view.py, main_controller.py).
+- 2026-01-26 - Export updated to XLSX with separate "Apps" and "Related Files" sheets (openpyxl), and UI labels/dialogs updated accordingly (import_export.py, main_controller.py, main_view.py).

@@ -1,0 +1,332 @@
+{
+  "geometry": "1680x1063+471+155",
+  "sort_column": "name",
+  "sort_reverse": false,
+  "gui_settings": {
+    "font_family": "Tahoma",
+    "font_size": 12,
+    "window_bg": "#7f7f7f",
+    "text_color": "#000000",
+    "table_bg": "#040404",
+    "table_fg": "#1dac15",
+    "accent": "#8ccbff",
+    "installed_text": "#1a7f37",
+    "missing_text": "#b00020",
+    "map_bg": "#708ab1",
+    "map_text": "#1f2933",
+    "map_edge": "#9aa5b1",
+    "map_drive_bg": "#d9e2ec",
+    "map_drive_outline": "#334e68",
+    "map_node_outline": "#030405",
+    "map_unknown_group": "#cbd2d9",
+    "map_highlight": "#0b69ff",
+    "map_max_related": 10,
+    "deep_scan": false
+  },
+  "groups": [
+    "VIDEO EDITING",
+    "GAMING",
+    "LIVE STREAMING",
+    "CODING",
+    "DRIVERS",
+    "ADMIN"
+  ],
+  "app_groups": {
+    "[\"THE FAKE ONE\", \"1.1.1.1\"]": "GAMING",
+    "20|AMD Chipset Software|11|7.06.02.123": "ADMIN",
+    "16|AMD GPIO2 Driver|9|2.2.0.134": "DRIVERS",
+    "14|AMD PCI Driver|7|1.0.0.9": "DRIVERS",
+    "14|AMD PSP Driver|8|5.39.0.0": "DRIVERS",
+    "25|AMD Ryzen Balanced Driver|8|8.0.0.13": "DRIVERS",
+    "16|AMD Ryzen Master|11|2.14.2.3341": "DRIVERS",
+    "22|AMD SBxxx SMBus Driver|9|5.12.0.44": "DRIVERS",
+    "19|AMD_Chipset_Drivers|11|7.06.02.123": "DRIVERS",
+    "14|Audacity 3.7.6|5|3.7.6": "VIDEO EDITING",
+    "14|Battlefield\u2122 6|0|": "GAMING",
+    "21|CrystalDiskInfo 9.7.2|5|9.7.2": "ADMIN",
+    "15|DaVinci Resolve|10|20.2.10006": "VIDEO EDITING",
+    "30|DaVinci Resolve Control Panels|7|2.3.4.0": "ADMIN",
+    "7|Discord|8|1.0.9221": "GAMING",
+    "17|DiskGenius V5.6.1|0|": "ADMIN",
+    "18|Elgato Stream Deck|11|7.1.1.22340": "GAMING",
+    "16|EVGA Unleash RGB|8|1.0.25.0": "GAMING",
+    "35|Fairlight Audio Accelerator Utility|6|1.0.15": "VIDEO EDITING",
+    "27|FireStorm version 3.0.0.040|9|3.0.0.040": "DRIVERS",
+    "3|Git|6|2.51.2": "CODING",
+    "17|Gray Zone Warfare|0|": "GAMING",
+    "10|HWiNFO\u00ae 64|4|8.28": "ADMIN",
+    "10|Jump Space|0|": "GAMING",
+    "10|Liar's Bar|0|": "GAMING",
+    "66|Microsoft Visual C++ 2015-2022 Redistributable (x64) - 14.44.35211|13|14.44.35211.0": "CODING",
+    "35|Microsoft Visual Studio Code (User)|7|1.108.2": "CODING",
+    "29|NVIDIA Graphics Driver 591.59|6|591.59": "DRIVERS",
+    "30|NVIDIA HD Audio Driver 1.4.5.7|7|1.4.5.7": "DRIVERS",
+    "10|OBS Studio|6|32.0.1": "LIVE STREAMING",
+    "6|Portal|0|": "GAMING",
+    "8|Portal 2|0|": "GAMING",
+    "18|Portal: Revolution|0|": "GAMING",
+    "22|Python 3.14.0 (64-bit)|10|3.14.150.0": "CODING",
+    "16|Samsung Magician|9|8.3.2.850": "DRIVERS",
+    "5|Steam|10|2.10.91.91": "GAMING",
+    "22|SteelSeries GG 103.0.0|7|103.0.0": "DRIVERS",
+    "8|The Cave|0|": "GAMING",
+    "15|The Past Within|0|": "GAMING",
+    "27|Windows Subsystem for Linux|7|2.6.1.0": "CODING",
+    "37|AMD User Experience Program Installer|12|2420.0.0.802": "ADMIN",
+    "18|TRCC version 2.0.2|5|2.0.2": "ADMIN"
+  },
+  "scan_drives": [
+    "C:",
+    "V:"
+  ],
+  "group_colors": {
+    "VIDEO EDITING": "#1f77b4",
+    "GAMING": "#ff7f0e",
+    "LIVE STREAMING": "#2ca02c",
+    "CODING": "#d62728",
+    "DRIVERS": "#9467bd",
+    "ADMIN": "#3518be"
+  },
+  "size_cache": {
+    "14|Battlefield\u2122 6|0|": {
+      "size_mb": 64338,
+      "install_location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Battlefield 6",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "13|Google Chrome|14|143.0.7499.170": {
+      "size_mb": 428,
+      "install_location": "C:\\Program Files\\Google\\Chrome\\Application",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "17|Gray Zone Warfare|0|": {
+      "size_mb": 20089,
+      "install_location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Gray Zone Warfare",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "10|Jump Space|0|": {
+      "size_mb": 20835,
+      "install_location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\JumpSpace",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "10|Liar's Bar|0|": {
+      "size_mb": 17681,
+      "install_location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Liar's Bar",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "14|Microsoft Edge|13|144.0.3719.82": {
+      "size_mb": 784,
+      "install_location": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "31|Microsoft Edge WebView2 Runtime|13|144.0.3719.93": {
+      "size_mb": 774,
+      "install_location": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "29|NVIDIA Graphics Driver 591.59|6|591.59": {
+      "size_mb": 2,
+      "install_location": "C:\\Program Files\\NVIDIA Corporation\\Installer2\\Display.Driver.{B0FBF89B-250F-4A63-BD2D-6FF1CA94C541}",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "30|NVIDIA HD Audio Driver 1.4.5.7|7|1.4.5.7": {
+      "size_mb": 1,
+      "install_location": "C:\\Program Files\\NVIDIA Corporation\\Installer2\\HDAudio.Driver.{E89E1CD7-9603-4483-8862-EAD4B5E2C434}",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "26|NVIDIA Install Application|12|2.1002.438.0": {
+      "size_mb": 17,
+      "install_location": "C:\\Program Files\\NVIDIA Corporation\\Installer2\\InstallerCore",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "38|NVIDIA PhysX System Software 9.23.1019|9|9.23.1019": {
+      "size_mb": 198,
+      "install_location": "C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "6|Portal|0|": {
+      "size_mb": 4152,
+      "install_location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Portal",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "8|Portal 2|0|": {
+      "size_mb": 13397,
+      "install_location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Portal 2",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "18|Portal: Revolution|0|": {
+      "size_mb": 12145,
+      "install_location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Portal Revolution",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "8|The Cave|0|": {
+      "size_mb": 1183,
+      "install_location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\TheCave",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "15|The Past Within|0|": {
+      "size_mb": 551,
+      "install_location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\The Past Within",
+      "updated_at": "2026-01-25T01:01:39"
+    },
+    "10|OBS Studio|6|32.0.1": {
+      "size_mb": 129,
+      "install_location": "C:\\Program Files\\obs-studio\\bin\\64bit\\obs64.exe",
+      "updated_at": "2026-01-26T17:40:04"
+    },
+    "5|Steam|10|2.10.91.91": {
+      "size_mb": 72793,
+      "install_location": "C:\\Program Files (x86)\\Steam\\uninstall.exe",
+      "updated_at": "2026-01-26T17:40:31"
+    }
+  },
+  "related_overrides": {
+    "v:\\python projects\\arc\\arc solo\\arc_poc_state.json": "22|Python 3.14.0 (64-bit)|10|3.14.150.0",
+    "v:\\python projects\\holding\\pipreport.json": "22|Python 3.14.0 (64-bit)|10|3.14.150.0",
+    "v:\\python projects\\pip_dasher_game\\.venv\\pyvenv.cfg": "22|Python 3.14.0 (64-bit)|10|3.14.150.0",
+    "v:\\python projects\\pip_dasher_game\\.vscode\\launch.json": "22|Python 3.14.0 (64-bit)|10|3.14.150.0",
+    "v:\\python projects\\v2 pipdash\\v2_pipdash_monitor\\.vscode\\settings.json": "22|Python 3.14.0 (64-bit)|10|3.14.150.0",
+    "c:\\programdata\\nvidia corporation\\displaydriverras\\nvtelemetry\\events.dat": "26|NVIDIA Install Application|12|2.1002.438.0",
+    "c:\\programdata\\nvidia corporation\\displaydriverras\\nvtelemetry\\telemetry_switch.ini": "26|NVIDIA Install Application|12|2.1002.438.0",
+    "c:\\programdata\\nvidia corporation\\nvprofileupdaterplugin\\drs\\metadata.json": "26|NVIDIA Install Application|12|2.1002.438.0",
+    "c:\\programdata\\nvidia corporation\\nvprofileupdaterplugin\\drs\\update.dat": "26|NVIDIA Install Application|12|2.1002.438.0",
+    "c:\\programdata\\nvidia corporation\\nvprofileupdaterplugin\\optimus\\metadata.json": "26|NVIDIA Install Application|12|2.1002.438.0",
+    "c:\\programdata\\nvidia corporation\\nvprofileupdaterplugin\\optimus\\update.dat": "26|NVIDIA Install Application|12|2.1002.438.0"
+  },
+  "related_manual": {
+    "15|DaVinci Resolve|10|20.2.10006": [
+      {
+        "path": "V:/Dacinci work/Big Title Pack",
+        "kind": "dir"
+      },
+      {
+        "path": "V:/Dacinci work/Resolve Projects/SoundLib.db",
+        "kind": "file"
+      },
+      {
+        "path": "V:/Dacinci work/Resolve Projects/Users/guest",
+        "kind": "dir"
+      },
+      {
+        "path": "V:/Twitch Assets",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Program Files\\Blackmagic Design\\DaVinci Resolve",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Users\\mstre\\AppData\\Roaming\\Blackmagic Design\\DaVinci Resolve",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Users\\Public\\Documents\\Blackmagic Design\\DaVinci Resolve",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Blackmagic Design",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Program Files\\Blackmagic Design",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Support\\LUT\\Blackmagic Design",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Blackmagic Design",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Users\\Public\\Documents\\Blackmagic Design",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Users\\mstre\\DaVinci Resolve Media",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Support\\Developer\\DaVinciCTL",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Program Files\\Blackmagic Design\\DaVinci Resolve\\Resolve.exe",
+        "kind": "file"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Blackmagic Design\\DaVinci Control Panels\\DriverUsb\\DaVinciPanels",
+        "kind": "dir"
+      }
+    ],
+    "14|Audacity 3.7.6|5|3.7.6": [
+      {
+        "path": "C:\\Program Files\\Audacity\\Audacity.exe",
+        "kind": "file"
+      },
+      {
+        "path": "C:\\Users\\mstre\\AppData\\Local\\audacity",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Users\\mstre\\AppData\\Roaming\\audacity",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Users\\mstre\\OneDrive\\Documents\\Audacity",
+        "kind": "dir"
+      },
+      {
+        "path": "C:\\Users\\mstre\\AppData\\Roaming\\audacity\\audacity.cfg",
+        "kind": "file"
+      }
+    ]
+  },
+  "related_ignore": {
+    "15|DaVinci Resolve|10|20.2.10006": [
+      "C:\\Users\\mstre\\OneDrive\\Documents\\Blackmagic Design\\DaVinci Resolve",
+      "C:\\Users\\mstre\\OneDrive\\Documents\\Blackmagic Design",
+      "C:\\Users\\mstre\\OneDrive\\Apps\\Designer",
+      "C:\\Windows\\System32\\restore",
+      "C:\\Windows\\SysWOW64\\restore"
+    ],
+    "14|Audacity 3.7.6|5|3.7.6": [
+      "C:\\Program Files (x86)\\Common Files\\Steam",
+      "C:\\Program Files (x86)\\Steam",
+      "C:\\Program Files (x86)\\Steam\\steam",
+      "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Steam",
+      "C:\\Users\\mstre\\AppData\\Local\\Steam",
+      "C:\\Users\\mstre\\AppData\\Local\\Temp\\steam"
+    ]
+  },
+  "related_unassigned": {
+    "10|OBS Studio|6|32.0.1": [
+      "v:\\active projects",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0061m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0047m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0049m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0054m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0057m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0058m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0060m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0062m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0050m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0053m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0052m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0051m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0059m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0048m01.xml",
+      "v:\\active projects\\mr fix-it\\vids\\html vid doc\\c0063m01.xml"
+    ]
+  },
+  "install_location_overrides": {
+    "15|DaVinci Resolve|10|20.2.10006": "C:/Program Files/Blackmagic Design",
+    "18|Elgato Stream Deck|11|7.1.1.22340": "C:/Program Files/Elgato/StreamDeck"
+  },
+  "version_overrides": {},
+  "install_date_overrides": {}
+}
