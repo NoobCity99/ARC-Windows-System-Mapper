@@ -1,5 +1,6 @@
 import locale
 import os
+import sys
 import queue
 import threading
 import webbrowser
@@ -29,8 +30,16 @@ except locale.Error:
 
 
 STATE_FILE = "arc_poc_state.json"
-ASSET_DIR = os.path.join(os.path.dirname(__file__), "assets")
-WINDOW_ICON_PATH = os.path.join(ASSET_DIR, "app.ico")
+
+
+def resource_path(*parts: str) -> str:
+    # Support running from source and from a PyInstaller bundle.
+    base_dir = getattr(sys, "_MEIPASS", os.path.dirname(__file__))
+    return os.path.join(base_dir, *parts)
+
+
+ASSET_DIR = resource_path("assets")
+WINDOW_ICON_PATH = resource_path("assets", "app.ico")
 
 
 @dataclass(frozen=True)
