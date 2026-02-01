@@ -81,3 +81,11 @@
 - 2026-01-26 - Related Files view now groups rows by app with collapsible parent rows (collapsed by default) and supports mark toggling on related rows (main_view.py, main_controller.py).
 - 2026-01-26 - Added right-click open for related file paths and a system-view "VIEW RELATED FILES" context action that switches views and filters by app name (main_view.py, main_controller.py).
 - 2026-01-26 - Export updated to XLSX with separate "Apps" and "Related Files" sheets (openpyxl), and UI labels/dialogs updated accordingly (import_export.py, main_controller.py, main_view.py).
+
+## [2026-02-01] (Thread Updates)
+- 2026-02-01 — Added persistent data directory configuration for state storage (arc_poc_config.json) with AppData defaults and env override support (store.py).
+- 2026-02-01 — Added first-run prompt to choose the persistent data folder and persist that selection (main_controller.py, store.py).
+- 2026-02-01 — Added missing-state recovery prompt with options to locate an existing file or choose a new folder (main_controller.py).
+- 2026-02-01 — Added legacy state migration from the project folder into the configured data directory (store.py).
+- 2026-02-01 — Added UI customization guidance comments for default colors/fonts in settings view (settings_view.py).
+- 2026-02-01 — Fixed default GUI font handling to use TkDefaultFont with a Tahoma fallback and numeric font size (main_controller.py).

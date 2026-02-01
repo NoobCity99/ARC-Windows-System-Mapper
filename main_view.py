@@ -41,12 +41,12 @@ class MainView:
         self._drive_tag_map: Dict[str, str] = {}
         self._map_context_drive: str = ""
         self._drive_tint_palette = [
-            "#e7f0ff",
-            "#eaf7f0",
-            "#f9efe6",
-            "#f3eaf8",
-            "#eef6f7",
-            "#f8f3e6",
+            "#b4cbf2",
+            "#f6b7ea",
+            "#f7d4b5",
+            "#e0b8f5",
+            "#aceaf2",
+            "#f6c1c1",
         ]
         self._tint_icons: Dict[str, tk.PhotoImage] = {}
         self._reassign_window: Optional[tk.Toplevel] = None
@@ -336,7 +336,7 @@ class MainView:
         help_menu = tk.Menu(menubar, tearoff=0)
         help_menu.add_command(label="How To", command=self._show_manual)
         help_menu.add_command(label="About", command=self._show_about)
-        menubar.add_cascade(label="HELP", menu=help_menu)
+        menubar.add_cascade(label="Help", menu=help_menu)
         self.root.config(menu=menubar)
         self.file_menu = file_menu
         self.set_export_enabled(False)

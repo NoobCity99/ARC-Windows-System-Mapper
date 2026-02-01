@@ -1,9 +1,15 @@
 import json
 import os
+import shutil
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import Callable, Dict, List, Optional
 
 from utils import unique_casefold
+
+APP_NAME = "ARC"
+ENV_DATA_DIR = "ARC_DATA_DIR"
+CONFIG_FILENAME = "arc_poc_config.json"
+CONFIG_KEY = "data_dir"
 
 
 @dataclass
@@ -26,8 +32,101 @@ class StoredState:
     install_date_overrides: Dict[str, str] = field(default_factory=dict)
 
 
-def default_state_path(filename: str) -> str:
+def app_data_dir(app_name: str = APP_NAME) -> str:
+    if os.name == "nt":
+        base = os.getenv("LOCALAPPDATA") or os.getenv("APPDATA")
+    else:
+        base = os.getenv("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+    if not base:
+        base = os.path.expanduser("~")
+    return os.path.join(base, app_name)
+
+
+def _config_path() -> str:
+    return os.path.join(app_data_dir(), CONFIG_FILENAME)
+
+
+def _load_config() -> Dict[str, str]:
+    path = _config_path()
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            payload = json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return {}
+    if not isinstance(payload, dict):
+        return {}
+    config: Dict[str, str] = {}
+    for key, value in payload.items():
+        if not isinstance(key, str):
+            continue
+        if isinstance(value, str):
+            config[key] = value
+    return config
+
+
+def _save_config(config: Dict[str, str]) -> None:
+    path = _config_path()
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(config, fh, indent=2)
+    except OSError:
+        pass
+
+
+def set_configured_data_dir(data_dir: str) -> None:
+    if not isinstance(data_dir, str):
+        return
+    data_dir = data_dir.strip()
+    if not data_dir:
+        return
+    config = _load_config()
+    config[CONFIG_KEY] = data_dir
+    _save_config(config)
+
+
+def _legacy_state_path(filename: str) -> str:
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
+
+
+def _maybe_migrate_legacy_state(target_path: str, filename: str) -> None:
+    if os.path.exists(target_path):
+        return
+    legacy = _legacy_state_path(filename)
+    if legacy == target_path or not os.path.exists(legacy):
+        return
+    try:
+        os.makedirs(os.path.dirname(target_path), exist_ok=True)
+        shutil.copyfile(legacy, target_path)
+    except OSError:
+        pass
+
+
+def resolve_data_dir(prompt_for_dir: Optional[Callable[[], str]] = None) -> str:
+    override = os.getenv(ENV_DATA_DIR)
+    if override:
+        return override
+    config = _load_config()
+    data_dir = str(config.get(CONFIG_KEY) or "").strip()
+    if not data_dir and prompt_for_dir:
+        selected = str(prompt_for_dir() or "").strip()
+        if selected:
+            data_dir = selected
+    if not data_dir:
+        data_dir = app_data_dir()
+    if prompt_for_dir:
+        config[CONFIG_KEY] = data_dir
+        _save_config(config)
+    return data_dir
+
+
+def default_state_path(filename: str, prompt_for_dir: Optional[Callable[[], str]] = None) -> str:
+    data_dir = resolve_data_dir(prompt_for_dir)
+    path = os.path.join(data_dir, filename)
+    _maybe_migrate_legacy_state(path, filename)
+    return path
 
 
 def load_state(path: str, default_gui_settings: Dict[str, object]) -> StoredState:
@@ -271,6 +370,7 @@ def save_state(path: str, state: StoredState) -> None:
         "install_date_overrides": state.install_date_overrides,
     }
     try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w", encoding="utf-8") as fh:
             json.dump(payload, fh, indent=2)
     except OSError:

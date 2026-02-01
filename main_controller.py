@@ -4,6 +4,7 @@ import sys
 import queue
 import threading
 import webbrowser
+import shutil
 from dataclasses import dataclass, replace
 from typing import Dict, List, Optional, Set, Tuple
 
@@ -20,7 +21,7 @@ from models import AppEntry, RelatedFile
 from related_scanner import DeepScanLimits, RelatedFileScanner
 from scanner import AppScanner, SizeScanLimits
 from settings_view import SettingsView
-from store import StoredState, default_state_path, load_state, save_state
+from store import StoredState, default_state_path, load_state, save_state, set_configured_data_dir
 from utils import normalize_date, normalize_url, unique_casefold
 
 try:
@@ -193,7 +194,9 @@ class MainController:
         self.scan_drives: List[str] = []
         self.available_drives: List[str] = []
 
-        self.state_path = default_state_path(STATE_FILE)
+        prompt_for_dir = None if self._should_skip_state_prompt() else self._prompt_state_dir
+        self.state_path = default_state_path(STATE_FILE, prompt_for_dir)
+        self._handle_missing_state_file()
         self._load_state()
         self._ensure_group_colors()
         self.available_drives = self._detect_drives()
@@ -302,6 +305,87 @@ class MainController:
             self.root.iconbitmap(default=WINDOW_ICON_PATH)
         except tk.TclError:
             pass
+
+    def _should_skip_state_prompt(self) -> bool:
+        if os.getenv("ARC_SKIP_DATA_PROMPT") == "1":
+            return True
+        if os.getenv("PYTEST_CURRENT_TEST"):
+            return True
+        return False
+
+    def _prompt_state_dir(self) -> str:
+        message = (
+            "Choose where ARC should store its persistent data (settings, groups, scan cache).\n\n"
+            "Tip: pick a folder on a secondary drive if you want it to survive a primary drive failure.\n\n"
+            "Click Yes to choose a folder, or No to use the default AppData location."
+        )
+        try:
+            choose = messagebox.askyesno("Choose data location", message, parent=self.root)
+        except tk.TclError:
+            return ""
+        if not choose:
+            return ""
+        folder = filedialog.askdirectory(parent=self.root, title="Choose data folder for ARC")
+        return folder or ""
+
+    def _handle_missing_state_file(self) -> None:
+        if os.path.exists(self.state_path):
+            return
+        if self._should_skip_state_prompt():
+            return
+        message = (
+            "ARC can't find its persistent state file:\n\n"
+            f"{self.state_path}\n\n"
+            "Was it moved or deleted?\n\n"
+            "Yes = locate the existing file\n"
+            "No = choose a new data folder for a replacement file\n"
+            "Cancel = keep the current location and start fresh"
+        )
+        try:
+            choice = messagebox.askyesnocancel("State file missing", message, parent=self.root)
+        except tk.TclError:
+            return
+        if choice is None:
+            return
+        if choice:
+            self._locate_existing_state_file()
+            return
+        self._choose_new_data_dir()
+
+    def _locate_existing_state_file(self) -> None:
+        file_path = filedialog.askopenfilename(
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+            title="Locate ARC state file",
+        )
+        if not file_path:
+            return
+        self._use_state_file(file_path)
+
+    def _choose_new_data_dir(self) -> None:
+        folder = filedialog.askdirectory(parent=self.root, title="Choose new ARC data folder")
+        if not folder:
+            return
+        self.state_path = os.path.join(folder, STATE_FILE)
+        set_configured_data_dir(folder)
+
+    def _use_state_file(self, selected_path: str) -> None:
+        folder = os.path.dirname(selected_path)
+        if not folder:
+            return
+        target_path = os.path.join(folder, STATE_FILE)
+        if os.path.normcase(os.path.abspath(selected_path)) != os.path.normcase(os.path.abspath(target_path)):
+            try:
+                os.makedirs(folder, exist_ok=True)
+                shutil.copyfile(selected_path, target_path)
+            except OSError as exc:
+                messagebox.showwarning(
+                    "State file copy failed",
+                    f"Could not copy the selected file to:\n\n{target_path}\n\n{exc}",
+                    parent=self.root,
+                )
+                return
+        self.state_path = target_path
+        set_configured_data_dir(folder)
 
     def trigger_scan(self) -> None:
         if self._scan_in_progress:
@@ -2619,15 +2703,17 @@ class MainController:
 
     def _default_gui_settings(self) -> Dict[str, object]:
         default_font = tkfont.nametofont("TkDefaultFont")
+        available_fonts = set(tkfont.families())
+        default_family = "Tahoma" if "Tahoma" in available_fonts else default_font.actual("family")
         return {
             # Adjust default fonts/colors used across the UI.
-            "font_family": default_font.actual("family"),
-            "font_size": default_font.actual("size"),
+            "font_family": default_family,
+            "font_size": 14,
             "window_bg": self.root.cget("bg"),
             "text_color": self.style.lookup("TLabel", "foreground") or "black",
-            "table_bg": self.style.lookup("Treeview", "background") or "white",
+            "table_bg": self.style.lookup("Treeview", "background") or "black",
             "table_fg": self.style.lookup("Treeview", "foreground") or "black",
-            "accent": self._style_map_value("Treeview", "background", "selected") or "#4a6984",
+            "accent": self._style_map_value("Treeview", "background", "selected") or "#646c74",
             "installed_text": "#1a7f37",
             "missing_text": "#b00020",
             "map_bg": "#f4f6f9",

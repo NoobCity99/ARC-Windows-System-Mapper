@@ -3,6 +3,17 @@ import tkinter.font as tkfont
 from tkinter import colorchooser, ttk
 from typing import Callable, Dict, List, Optional
 
+# DEFAULT UI VALUES (first-run / app start)
+# To change the *default* colors, fonts, and sizes the app starts with,
+# edit the _default_gui_settings() method in `main_controller.py`.
+# Keys you can adjust there:
+# - "font_family", "font_size"
+# - "window_bg", "text_color", "table_bg", "table_fg", "accent"
+# - "installed_text", "missing_text"
+# - "map_bg", "map_text", "map_edge", "map_drive_bg"
+# - "map_drive_outline", "map_node_outline", "map_unknown_group", "map_highlight"
+# - "map_max_related", "deep_scan"
+
 
 class SettingsView:
     def __init__(self, root: tk.Tk, callbacks: dict) -> None:
